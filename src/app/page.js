@@ -1,101 +1,85 @@
-import Image from "next/image";
+"use client"
+import React, { useState,useCallback } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [length, setLength] = useState(8);
+  const [numberAllowed, setNumberAllowed] = useState(false);
+  const [charAllowed, setcharAllowed] = useState(false);
+  const [Password, setPassword] = useState(""); 
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const PasswordGenerator = useCallback(() =>{
+    let pass= ""
+    let str =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    
+    if(numberAllowed) str+= "0123456789"
+    if(charAllowed) str+= "@#$%^&*(){}"
+
+    for(i=1; i<= array.length; i++ ){
+        let char =Math.floor(Math.random() * str.length + 1)
+        pass =str.charAt(char)
+    }
+
+    setPassword(pass)
+
+  }, [length, numberAllowed, charAllowed, setPassword])
+  
+  return (
+    <> 
+    <div className="w-full  max-w-lg mx-auto shadow-md rounded-lg 
+    px-6 py-4 my-12 text-orange-500 bg-gray-800">
+    
+    <h1 className="text-white text-center my-3 font-bold">Password</h1>
+    <div className="flex shadow-lg rounded-lg overflow-hidden mb-4">
+    <input
+    type="text"
+    value={Password}
+    className="outline-none w-full py-1 px-3 "
+    placeholder="password"
+    readOnly
+    />
+    <button className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0">
+    Copy</button>
     </div>
+    
+    <div className="flex items-center text-sm gap-x-1">
+    <input
+       type="range"
+       min={6}
+       max={25}
+       value={length}
+       className="cursor-pointer"
+       onChange={(e) => {setLength(e.target.value)}}
+    />
+    <label>Length: {length}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    
+    <div className="flex items-center gap-x-1">
+    <input
+        type="checkbox"
+        defaultChecked={numberAllowed}
+        id="numberInput"
+        onChange={() =>{setNumberAllowed((prev) => !prev);
+
+      }}
+    />
+    <label>Number {numberAllowed}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+       <div className="flex items-center gap-x-1">
+       <input
+       type="checkbox"
+       defaultChecked={charAllowed}
+       id="characterInput"
+    
+       onChange={() =>{setNumberAllowed((prev) => !prev);
+
+      }}
+      />
+      <label>Special Character {charAllowed}</label>
+      </div>
+      </div>
+      <img className="mt-2 rounded-md" src="password image.png" 
+      alt="" width="100%" height="100%"/>
+     </div>
+     </>
   );
 }
