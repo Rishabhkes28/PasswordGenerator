@@ -1,11 +1,14 @@
 "use client"
-import React, { useState,useCallback } from "react";
+import React, { useState,useCallback, useEffect,useRef } from "react";
 
 export default function Home() {
   const [length, setLength] = useState(8);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setcharAllowed] = useState(false);
-  const [Password, setPassword] = useState(""); 
+  const [Password, setPassword] = useState("")
+
+  //useRef hook
+  const PasswordRef =useRef(null)
 
   const PasswordGenerator = useCallback(() =>{
     let pass= ""
@@ -13,16 +16,27 @@ export default function Home() {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     
     if(numberAllowed) str+= "0123456789"
-    if(charAllowed) str+= "@#$%^&*(){}"
-
-    for(i=1; i<= array.length; i++ ){
+    if(charAllowed) str+= "*@#$%&!?"
+    
+    let i=1;
+    for(i=1; i<=length; i++ ){
         let char =Math.floor(Math.random() * str.length + 1)
-        pass =str.charAt(char)
+        pass +=str.charAt(char)
     }
 
     setPassword(pass)
 
   }, [length, numberAllowed, charAllowed, setPassword])
+
+  const copyPasswordToClipboard =useCallback(() =>{
+    PasswordRef.current?.select();
+    PasswordRef.current?.setSelectionRange(0, Password.length);
+    window.navigator.clipboard.writeText(Password)
+  }, [Password])
+
+  useEffect(() =>{
+    PasswordGenerator()
+  }, [length, numberAllowed, charAllowed, PasswordGenerator])
   
   return (
     <> 
@@ -36,9 +50,10 @@ export default function Home() {
     value={Password}
     className="outline-none w-full py-1 px-3 "
     placeholder="password"
+    Ref={PasswordRef}
     readOnly
     />
-    <button className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0">
+    <button onClick={copyPasswordToClipboard} className="outline-none bg-blue-700 hover:bg-blue-500 text-white px-3 py-0.5 shrink-0">
     Copy</button>
     </div>
     
@@ -70,14 +85,14 @@ export default function Home() {
        defaultChecked={charAllowed}
        id="characterInput"
     
-       onChange={() =>{setNumberAllowed((prev) => !prev);
+       onChange={() =>{setcharAllowed((prev) => !prev);
 
       }}
       />
-      <label>Special Character {charAllowed}</label>
+      <label htmlFor="characterInput">Special Character {charAllowed}</label>
       </div>
       </div>
-      <img className="mt-2 rounded-md" src="password image.png" 
+      <img className="mt-2 rounded-md" src=" password image.png" 
       alt="" width="100%" height="100%"/>
      </div>
      </>
